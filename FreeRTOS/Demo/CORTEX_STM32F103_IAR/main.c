@@ -122,6 +122,8 @@
 #include "PollQ.h"
 #include "flash.h"
 #include "comtest2.h"
+#include "serial.h"
+
 
 /* Task priorities. */
 #define mainQUEUE_POLL_PRIORITY				( tskIDLE_PRIORITY + 2 )
@@ -283,12 +285,22 @@ extern unsigned short usMaxJitter;
 
 	xLastExecutionTime = xTaskGetTickCount();
 	xMessage.pcMessage = cPassMessage;
+    bool LED = FALSE;
 
     for( ;; )
 	{
 		/* Perform this check every mainCHECK_DELAY milliseconds. */
 		vTaskDelayUntil( &xLastExecutionTime, mainCHECK_DELAY );
 
+#if 0        
+        xSerialPutChar(NULL, 'X', 0 );
+        if (LED)
+            GPIO_WriteBit(GPIOA, GPIO_Pin_8, Bit_SET);
+        else 
+            GPIO_WriteBit(GPIOA, GPIO_Pin_8, Bit_RESET);
+
+        LED = !LED;
+#endif        
 		/* Has an error been found in any task? */
 
         if( xAreBlockingQueuesStillRunning() != pdTRUE )

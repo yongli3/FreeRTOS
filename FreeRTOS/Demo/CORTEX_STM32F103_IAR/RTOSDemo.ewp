@@ -43,11 +43,11 @@
         <option>
           <name>Output variant</name>
           <version>2</version>
-          <state>7</state>
+          <state>5</state>
         </option>
         <option>
           <name>Output description</name>
-          <state>No specifier a, A, no specifier n, no float nor long long, no flags.</state>
+          <state>No specifier a, A, no specifier n, no float nor long long.</state>
         </option>
         <option>
           <name>GOutputBinary</name>
@@ -77,7 +77,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>7.60.1.11206</state>
+          <state>7.60.2.11347</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -89,7 +89,7 @@
         </option>
         <option>
           <name>OGChipSelectEditMenu</name>
-          <state>STM32F103ZG	ST STM32F103ZG</state>
+          <state>STM32F103RC	ST STM32F103RC</state>
         </option>
         <option>
           <name>GenLowLevelInterface</name>
@@ -149,7 +149,7 @@
         </option>
         <option>
           <name>GFPUDeviceSlave</name>
-          <state>STM32F103ZG	ST STM32F103ZG</state>
+          <state>STM32F103RC	ST STM32F103RC</state>
         </option>
         <option>
           <name>FPU2</name>
@@ -602,7 +602,7 @@
         <option>
           <name>OOCOutputFormat</name>
           <version>3</version>
-          <state>0</state>
+          <state>3</state>
         </option>
         <option>
           <name>OCOutputOverride</name>
@@ -610,7 +610,7 @@
         </option>
         <option>
           <name>OOCOutputFile</name>
-          <state>RTOSDemo.srec</state>
+          <state>RTOSDemo.bin</state>
         </option>
         <option>
           <name>OOCCommandLineProducer</name>
@@ -618,7 +618,7 @@
         </option>
         <option>
           <name>OOCObjCopyEnable</name>
-          <state>0</state>
+          <state>1</state>
         </option>
       </data>
     </settings>
@@ -701,11 +701,11 @@
         </option>
         <option>
           <name>IlinkMapFile</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>IlinkLogFile</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>IlinkLogInitialization</name>
@@ -934,7 +934,7 @@
         </option>
         <option>
           <name>IlinkLogCallGraph</name>
-          <state>0</state>
+          <state>1</state>
         </option>
       </data>
     </settings>

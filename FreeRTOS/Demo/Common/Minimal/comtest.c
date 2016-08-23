@@ -108,6 +108,7 @@
 #include "serial.h"
 #include "comtest.h"
 #include "partest.h"
+#include "stm32f10x_it.h"
 
 #define comSTACK_SIZE				configMINIMAL_STACK_SIZE
 #define comTX_LED_OFFSET			( 0 )
@@ -137,6 +138,10 @@ don't have to block to send. */
 /* Handle to the com port used by both tasks. */
 static xComPortHandle xPort = NULL;
 
+
+static portTASK_FUNCTION_PROTO( vComTxTask2, pvParameters );
+static portTASK_FUNCTION_PROTO( vComRxTask2, pvParameters );
+
 /* The transmit task as described at the top of the file. */
 static portTASK_FUNCTION_PROTO( vComTxTask, pvParameters );
 
@@ -160,11 +165,59 @@ void vAltStartComTestTasks( UBaseType_t uxPriority, uint32_t ulBaudRate, UBaseTy
 	/* Initialise the com port then spawn the Rx and Tx tasks. */
 	uxBaseLED = uxLED;
 	xSerialPortInitMinimal( ulBaudRate, comBUFFER_LEN );
+    xSerialPortInitMinimal2(9600, comBUFFER_LEN);
 
 	/* The Tx task is spawned with a lower priority than the Rx task. */
 	xTaskCreate( vComTxTask, "COMTx", comSTACK_SIZE, NULL, uxPriority - 1, ( TaskHandle_t * ) NULL );
 	xTaskCreate( vComRxTask, "COMRx", comSTACK_SIZE, NULL, uxPriority, ( TaskHandle_t * ) NULL );
 }
+
+static portTASK_FUNCTION( vComTxTask2, pvParameters )
+{
+	/* Just to stop compiler warnings. */
+	( void ) pvParameters;
+
+    for ( ;; ) {
+        // flash LED
+        #if 0
+        GPIO_WriteBit(GPIOA, GPIO_Pin_8, Bit_SET);
+        vTaskDelay(100);
+        GPIO_WriteBit(GPIOA, GPIO_Pin_8, Bit_RESET);
+        vTaskDelay(100);
+       #endif 
+    }
+}
+
+static portTASK_FUNCTION( vComRxTask2, pvParameters )
+{
+    signed char cByteRxed;
+    bool LED = FALSE;
+
+	/* Just to stop compiler warnings. */
+	( void ) pvParameters;
+
+    for ( ;; ) {
+        if( xSerialGetChar2(xPort, &cByteRxed, comRX_BLOCK_TIME )) {
+            xSerialPutChar(xPort, cByteRxed, comNO_BLOCK );    
+        }
+
+        if (cByteRxed == 0x30) {
+            //report LED status
+            xSerialPutChar2(xPort, LED?'1':'0', comNO_BLOCK);
+        } else if (cByteRxed == 0x31) {
+            // toggle LED
+            if (LED)
+               GPIO_WriteBit(GPIOA, GPIO_Pin_8, Bit_SET);
+            else 
+               GPIO_WriteBit(GPIOA, GPIO_Pin_8, Bit_RESET);
+            
+            xSerialPutChar2(xPort, LED?'1':'0', comNO_BLOCK);
+            
+            LED = !LED;
+         }
+    }
+}
+
 /*-----------------------------------------------------------*/
 
 static portTASK_FUNCTION( vComTxTask, pvParameters )
